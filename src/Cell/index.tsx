@@ -1,3 +1,6 @@
+/* eslint-disable react/jsx-no-bind */
+/* eslint-disable jsx-a11y/mouse-events-have-key-events */
+/* eslint-disable no-nested-ternary */
 import * as React from 'react';
 import classNames from 'classnames';
 import { supportRef } from 'rc-util/lib/ref';
@@ -27,6 +30,9 @@ function isRefComponent(component: CustomizeComponent) {
 }
 
 export interface CellProps<RecordType extends DefaultRecordType> {
+  count?: number;
+  colIndex?: number;
+  key: any;
   prefixCls?: string;
   className?: string;
   record?: RecordType;
@@ -169,8 +175,48 @@ function Cell<RecordType extends DefaultRecordType>(
     style: { ...additionalProps.style, ...alignStyle, ...fixedStyle },
     ref: isRefComponent(Component) ? ref : null,
   };
+  (window as any).removeLeftTimer = null;
+  (window as any).removeRightTimer = null;
+  function onMouseOverLeftHandle() {
+    if ((window as any).removeLeftTimer) clearTimeout((window as any).removeLeftTimer);
+    document.getElementById('fixedLeftDom').classList.add('test');
+  }
 
-  return (
+  function onMouseOutLeftHandle() {
+    (window as any).removeLeftTimer = setTimeout(() => {
+      document.getElementById('fixedLeftDom').classList.remove('test');
+    }, 1000);
+  }
+  function onMouseOverRightHandle() {
+    if ((window as any).removeRightTimer) clearTimeout((window as any).removeRightTimer);
+    document.getElementById('fixedRightDom').classList.add('test');
+  }
+
+  function onMouseOutRightHandle() {
+    (window as any).removeRightTimer = setTimeout(() => {
+      document.getElementById('fixedRightDom').classList.remove('test');
+    }, 1000);
+  }
+
+  return lastFixLeft ? (
+    <Component
+      {...componentProps}
+      onMouseOver={onMouseOverLeftHandle.bind(this)}
+      onMouseOut={onMouseOutLeftHandle.bind(this)}
+    >
+      {appendNode}
+      {childNode}
+    </Component>
+  ) : firstFixRight ? (
+    <Component
+      {...componentProps}
+      onMouseOver={onMouseOverRightHandle.bind(this)}
+      onMouseOut={onMouseOutRightHandle.bind(this)}
+    >
+      {appendNode}
+      {childNode}
+    </Component>
+  ) : (
     <Component {...componentProps}>
       {appendNode}
       {childNode}

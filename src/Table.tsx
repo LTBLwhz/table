@@ -65,6 +65,7 @@ import { getExpandableProps, getDataAndAriaProps } from './utils/legacyUtil';
 import Panel from './Panel';
 import Footer from './Footer';
 import { findAllChildrenKeys, renderExpandIcon } from './utils/expandUtil';
+import { getCellFixedInfo } from './utils/fixUtil';
 
 // Used for conditions cache
 const EMPTY_DATA = [];
@@ -474,7 +475,7 @@ function Table<RecordType extends DefaultRecordType>(props: TableProps<RecordTyp
     warning(false, '`components.body` with render props is only work on `scroll.y`.');
   }
 
-  if (fixHeader) {
+  if (true) {
     let bodyContent: React.ReactNode;
 
     if (typeof customizeScrollBody === 'function') {
@@ -570,6 +571,25 @@ function Table<RecordType extends DefaultRecordType>(props: TableProps<RecordTyp
   }
 
   const ariaProps = getDataAndAriaProps(props);
+  const fixedInfoList = flattenColumns.map((column, colIndex) =>
+    getCellFixedInfo(colIndex, colIndex, flattenColumns, stickyOffsets),
+  );
+  let fixedLeft = 0;
+  let fixedRight = 0;
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < fixedInfoList.length; i++) {
+    if (typeof fixedInfoList[i].fixLeft !== 'number') {
+      fixedLeft = fixedInfoList[i - 1].fixLeft + flattenColumns[i - 1].width;
+      break;
+    }
+  }
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < fixedInfoList.length; i++) {
+    if (typeof fixedInfoList[i].fixRight === 'number') {
+      fixedRight = fixedInfoList[i].fixRight + flattenColumns[i].width;
+      break;
+    }
+  }
 
   let fullTable = (
     <div
@@ -590,9 +610,50 @@ function Table<RecordType extends DefaultRecordType>(props: TableProps<RecordTyp
     >
       {title && <Panel className={`${prefixCls}-title`}>{title(mergedData)}</Panel>}
       <div className={`${prefixCls}-container`}>{groupTableNode}</div>
+      <div
+        id="fixedLeftDom"
+        onClick={controlScroll.bind(this, 'left')}
+        style={{
+          height: '100%',
+          position: 'absolute',
+          width: 40,
+          background: 'red',
+          top: 0,
+          bottom: 0,
+          zIndex: 999,
+          left: fixedLeft,
+          display: 'none',
+        }}
+      ></div>
+      <div
+        id="fixedRightDom"
+        onClick={controlScroll.bind(this, 'right')}
+        style={{
+          height: '100%',
+          position: 'absolute',
+          width: 40,
+          background: 'red',
+          top: 0,
+          bottom: 0,
+          zIndex: 999,
+          right: fixedRight,
+          display: 'none',
+        }}
+      ></div>
       {footer && <Panel className={`${prefixCls}-footer`}>{footer(mergedData)}</Panel>}
     </div>
   );
+
+  function controlScroll(position) {
+    document
+      .getElementsByClassName('rc-table-content')[0]
+      .scrollTo(
+        position === 'left'
+          ? document.getElementsByClassName('rc-table-content')[0].scrollLeft + 20
+          : document.getElementsByClassName('rc-table-content')[0].scrollLeft - 20,
+        0,
+      );
+  }
 
   if (fixColumn) {
     fullTable = <ResizeObserver onResize={onFullTableResize}>{fullTable}</ResizeObserver>;

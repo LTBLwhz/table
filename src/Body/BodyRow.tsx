@@ -160,7 +160,6 @@ function BodyRow<RecordType extends { children?: RecordType[] }>(props: BodyRowP
         if (column.onCell) {
           additionalCellProps = column.onCell(record, index);
         }
-
         const cellNode = (
           <Cell
             className={columnClassName}
