@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/mouse-events-have-key-events */
+/* eslint-disable no-nested-ternary */
 import * as React from 'react';
 import classNames from 'classnames';
 import get from 'lodash/get';
@@ -21,6 +23,8 @@ export interface TableCellProps<ValueType> {
   title?: string;
   expandIcon?: React.ReactNode;
   component?: CustomizeComponent;
+  needRightMouseHandle?: boolean;
+  needLeftMouseHandle?: boolean;
 }
 
 export default class TableCell<ValueType> extends React.Component<TableCellProps<ValueType>> {
@@ -44,6 +48,8 @@ export default class TableCell<ValueType> extends React.Component<TableCellProps
       expandIcon,
       column,
       component: BodyCell,
+      needRightMouseHandle,
+      needLeftMouseHandle,
     } = this.props;
     const { dataIndex, render, className = '' } = column;
 
@@ -117,7 +123,31 @@ export default class TableCell<ValueType> extends React.Component<TableCellProps
       }
     }
 
-    return (
+    return needRightMouseHandle ? (
+      <BodyCell
+        className={cellClassName}
+        onClick={this.handleClick}
+        {...tdProps}
+        onMouseOver={onMouseOverRight}
+        onMouseOut={onMouseOutRight}
+      >
+        {indentText}
+        {expandIcon}
+        {text}
+      </BodyCell>
+    ) : needLeftMouseHandle ? (
+      <BodyCell
+        className={cellClassName}
+        onClick={this.handleClick}
+        {...tdProps}
+        onMouseOver={onMouseOverLeft}
+        onMouseOut={onMouseOutLeft}
+      >
+        {indentText}
+        {expandIcon}
+        {text}
+      </BodyCell>
+    ) : (
       <BodyCell className={cellClassName} onClick={this.handleClick} {...tdProps}>
         {indentText}
         {expandIcon}
@@ -125,4 +155,29 @@ export default class TableCell<ValueType> extends React.Component<TableCellProps
       </BodyCell>
     );
   }
+}
+
+(window as any).leftTimer = null;
+(window as any).rightTimer = null;
+function onMouseOverLeft() {
+  if ((window as any).leftTimer) {
+    clearTimeout((window as any).leftTimer);
+    (window as any).leftTimer = null;
+  }
+  document.getElementById('fixedLeftBar').style.display = 'block';
+}
+function onMouseOutLeft() {
+  (window as any).leftTimer = setTimeout(() => {
+    document.getElementById('fixedLeftBar').style.display = 'none';
+  }, 300);
+}
+
+function onMouseOverRight() {
+  if ((window as any).rightTimer) clearTimeout((window as any).rightTimer);
+  document.getElementById('fixedRightBar').style.display = 'block';
+}
+function onMouseOutRight() {
+  (window as any).rightTimer = setTimeout(() => {
+    document.getElementById('fixedRightBar').style.display = 'none';
+  }, 300);
 }

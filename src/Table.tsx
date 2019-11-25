@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/mouse-events-have-key-events */
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import shallowequal from 'shallowequal';
@@ -464,7 +465,7 @@ class Table<ValueType> extends React.Component<TableProps<ValueType>, TableState
     const { prefixCls } = this.props;
 
     return (
-      <div className={`${prefixCls}-fixed-left`}>
+      <div className={`${prefixCls}-fixed-left`} style={{ display: 'flex' }}>
         {this.renderTable({
           columns: this.columnManager.leftColumns(),
           fixed: 'left',
@@ -477,7 +478,7 @@ class Table<ValueType> extends React.Component<TableProps<ValueType>, TableState
     const { prefixCls } = this.props;
 
     return (
-      <div className={`${prefixCls}-fixed-right`}>
+      <div className={`${prefixCls}-fixed-right`} style={{ display: 'flex' }}>
         {this.renderTable({
           columns: this.columnManager.rightColumns(),
           fixed: 'right',
@@ -515,8 +516,42 @@ class Table<ValueType> extends React.Component<TableProps<ValueType>, TableState
         isAnyColumnsFixed={isAnyColumnsFixed}
       />
     );
+    return (
+      <React.Fragment>
+        {(fixed === 'right' && (
+          <div
+            id="fixedRightBar"
+            className="fixed-right-bar"
+            onClick={this.tableScrollHandle.bind(this, 'right')}
+            onMouseOver={onMouseOverRight}
+            onMouseOut={onMouseOutRight}
+          ></div>
+        )) ||
+          null}
+        {[headTable, bodyTable]}
+        {(fixed === 'left' && (
+          <div
+            id="fixedLeftBar"
+            className="fixed-left-bar"
+            onClick={this.tableScrollHandle.bind(this, 'left')}
+            onMouseOver={onMouseOverLeft}
+            onMouseOut={onMouseOutLeft}
+          ></div>
+        )) ||
+          null}
+      </React.Fragment>
+    );
+  }
 
-    return [headTable, bodyTable];
+  tableScrollHandle(position) {
+    const { prefixCls, scrollSpeed = 50 } = this.props;
+    let { scrollLeft } = document.getElementsByClassName(`${prefixCls}-body`)[0];
+    if (position === 'left') {
+      scrollLeft += scrollSpeed;
+    } else {
+      scrollLeft -= scrollSpeed;
+    }
+    document.getElementsByClassName(`${prefixCls}-body`)[0].scrollTo(scrollLeft, 0);
   }
 
   renderTitle() {
@@ -598,6 +633,38 @@ class Table<ValueType> extends React.Component<TableProps<ValueType>, TableState
       </Provider>
     );
   }
+}
+
+(window as any).fixedLeftTimer = null;
+(window as any).fixedRightTimer = null;
+function onMouseOverLeft() {
+  if ((window as any).leftTimer) {
+    clearTimeout((window as any).leftTimer);
+    (window as any).leftTimer = null;
+    if ((window as any).fixedLeftTimer) {
+      clearTimeout((window as any).fixedLeftTimer);
+    }
+    document.getElementById('fixedLeftBar').style.display = 'block';
+  }
+}
+function onMouseOutLeft() {
+  (window as any).fixedLeftTimer = setTimeout(() => {
+    document.getElementById('fixedLeftBar').style.display = 'none';
+  }, 300);
+}
+
+function onMouseOverRight() {
+  if ((window as any).rightTimer) {
+    clearTimeout((window as any).rightTimer);
+    (window as any).rightTimer = null;
+    if ((window as any).fixedRightTimer) clearTimeout((window as any).fixedRightTimer);
+    document.getElementById('fixedRightBar').style.display = 'block';
+  }
+}
+function onMouseOutRight() {
+  (window as any).fixedRightTimer = setTimeout(() => {
+    document.getElementById('fixedRightBar').style.display = 'none';
+  }, 300);
 }
 
 polyfill(Table);

@@ -231,10 +231,10 @@ class TableRow<ValueType> extends React.Component<TableRowProps<ValueType>, Tabl
     const cells: Cell[] = [];
 
     renderExpandIconCell(cells);
-
     for (let i = 0; i < columns.length; i += 1) {
       const column = columns[i];
-
+      const needLeftMouseHandle = column.fixed === 'left' && i === columns.length - 1;
+      const needRightMouseHandle = column.fixed === 'right' && i === 0;
       warning(
         column.onCellClick === undefined,
         'column[onCellClick] is deprecated, please use column[onCell] instead.',
@@ -251,6 +251,8 @@ class TableRow<ValueType> extends React.Component<TableRowProps<ValueType>, Tabl
           key={column.key || column.dataIndex}
           expandIcon={hasExpandIcon(i) && renderExpandIcon()}
           component={BodyCell}
+          needLeftMouseHandle={needLeftMouseHandle}
+          needRightMouseHandle={needRightMouseHandle}
         />,
       );
     }
