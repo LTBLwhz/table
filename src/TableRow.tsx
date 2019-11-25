@@ -1,3 +1,5 @@
+/* eslint-disable no-multi-assign */
+/* eslint-disable class-methods-use-this */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import warning from 'rc-util/lib/warning';
@@ -47,6 +49,7 @@ export interface TableRowProps<ValueType> {
   expandedRow?: boolean;
   isAnyColumnsFixed?: boolean;
   ancestorKeys: Key[];
+  parentPrefixCls?: any;
 }
 
 interface TableRowState {
@@ -191,6 +194,14 @@ class TableRow<ValueType> extends React.Component<TableRowProps<ValueType>, Tabl
     }
   }
 
+  // type 0, 1,  0 是右 1是左
+  scrollTableHandle(type: any) {
+    const { parentPrefixCls } = this.props;
+    const tableScroll = document.getElementsByClassName(`${parentPrefixCls}-body`)[0];
+    const scrollX = (tableScroll.scrollLeft += type ? -50 : 50);
+    tableScroll.scrollTo(scrollX, 0);
+  }
+
   render() {
     if (!this.state.shouldRender) {
       return null;
@@ -217,10 +228,12 @@ class TableRow<ValueType> extends React.Component<TableRowProps<ValueType>, Tabl
       onRowMouseEnter,
       onRowMouseLeave,
       onRowContextMenu,
+      parentPrefixCls,
     } = this.props;
 
     const BodyRow = components.body.row;
     const BodyCell = components.body.cell;
+    const tableScroll = document.getElementsByClassName(`${parentPrefixCls}-body`)[0];
 
     let { className } = this.props;
 
@@ -252,6 +265,63 @@ class TableRow<ValueType> extends React.Component<TableRowProps<ValueType>, Tabl
           expandIcon={hasExpandIcon(i) && renderExpandIcon()}
           component={BodyCell}
         />,
+      );
+    }
+    const hasLeftFixed = columns.find(column => column.fixed === 'left');
+    const hasRightFixed = columns.find(column => column.fixed === 'right');
+    if (hasLeftFixed && !hasRightFixed) {
+      cells.push(
+        <div
+          key={`${rowKey}left`}
+          onClick={this.scrollTableHandle.bind(this, 1)}
+          style={{
+            opacity: hovered && tableScroll.scrollLeft ? 1 : 0,
+            zIndex: 10,
+            transition: 'all 0.8s ease',
+            position: 'fixed',
+            height,
+            width: 50,
+            display: 'flex',
+            textAlign: 'center',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          {'<='}
+        </div>,
+      );
+    }
+    if (!hasLeftFixed && hasRightFixed) {
+      const ml =
+        columns
+          .filter(column => column.fixed === 'right')
+          .reduce((t, c: any) => {
+            t += c.width;
+            return t;
+          }, 0) + 50;
+      cells.push(
+        <div
+          key={`${rowKey}right`}
+          onClick={this.scrollTableHandle.bind(this, 0)}
+          style={{
+            opacity:
+              hovered &&
+              tableScroll.scrollLeft !== tableScroll.scrollWidth - tableScroll.clientWidth
+                ? 1
+                : 0,
+            marginLeft: -ml,
+            position: 'fixed',
+            transition: 'all 0.8s ease',
+            height,
+            width: 50,
+            display: 'flex',
+            textAlign: 'center',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          {'=>'}
+        </div>,
       );
     }
 

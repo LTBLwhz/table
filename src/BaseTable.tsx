@@ -110,6 +110,7 @@ class BaseTable<ValueType> extends React.Component<BaseTableProps<ValueType>> {
             <TableRow
               fixed={fixed}
               indent={indent}
+              parentPrefixCls={prefixCls}
               className={className}
               record={record}
               index={i}
