@@ -74,7 +74,7 @@ class TableRow<ValueType> extends React.Component<TableRowProps<ValueType>, Tabl
 
   style: React.CSSProperties;
 
-  TrRef: any;
+  TrRef: any = null;
 
   static getDerivedStateFromProps(
     nextProps: TableRowProps<DefaultValueType>,
