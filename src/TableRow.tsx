@@ -234,7 +234,7 @@ class TableRow<ValueType> extends React.Component<TableRowProps<ValueType>, Tabl
     const BodyRow = components.body.row;
     const BodyCell = components.body.cell;
     const tableScroll = document.getElementsByClassName(`${parentPrefixCls}-body`)[0];
-
+    console.log(tableScroll);
     let { className } = this.props;
 
     if (hovered) {
@@ -275,7 +275,7 @@ class TableRow<ValueType> extends React.Component<TableRowProps<ValueType>, Tabl
           key={`${rowKey}left`}
           onClick={this.scrollTableHandle.bind(this, 1)}
           style={{
-            opacity: hovered && tableScroll.scrollLeft ? 1 : 0,
+            opacity: hovered ? 1 : 0, // && tableScroll.scrollLeft
             zIndex: 10,
             transition: 'all 0.8s ease',
             position: 'absolute',
@@ -305,11 +305,8 @@ class TableRow<ValueType> extends React.Component<TableRowProps<ValueType>, Tabl
           key={`${rowKey}right`}
           onClick={this.scrollTableHandle.bind(this, 0)}
           style={{
-            opacity:
-              hovered &&
-              tableScroll.scrollLeft !== tableScroll.scrollWidth - tableScroll.clientWidth
-                ? 1
-                : 0,
+            // &&tableScroll.scrollLeft !== tableScroll.scrollWidth - tableScroll.clientWidth
+            opacity: hovered ? 1 : 0,
             marginLeft: -ml,
             position: 'absolute',
             transition: 'all 0.8s ease',

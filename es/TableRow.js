@@ -233,6 +233,7 @@ function (_React$Component) {
       var BodyRow = components.body.row;
       var BodyCell = components.body.cell;
       var tableScroll = document.getElementsByClassName("".concat(parentPrefixCls, "-body"))[0];
+      console.log(tableScroll);
       var className = this.props.className;
 
       if (hovered) {
@@ -270,7 +271,7 @@ function (_React$Component) {
           key: "".concat(rowKey, "left"),
           onClick: this.scrollTableHandle.bind(this, 1),
           style: {
-            opacity: hovered && tableScroll.scrollLeft ? 1 : 0,
+            opacity: hovered ? 1 : 0,
             zIndex: 10,
             transition: 'all 0.8s ease',
             position: 'absolute',
@@ -296,7 +297,8 @@ function (_React$Component) {
           key: "".concat(rowKey, "right"),
           onClick: this.scrollTableHandle.bind(this, 0),
           style: {
-            opacity: hovered && tableScroll.scrollLeft !== tableScroll.scrollWidth - tableScroll.clientWidth ? 1 : 0,
+            // &&tableScroll.scrollLeft !== tableScroll.scrollWidth - tableScroll.clientWidth
+            opacity: hovered ? 1 : 0,
             marginLeft: -ml,
             position: 'absolute',
             transition: 'all 0.8s ease',
