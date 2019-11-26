@@ -275,6 +275,7 @@ function (_React$Component) {
             transition: 'all 0.8s ease',
             position: 'absolute',
             height: height,
+            right: 0,
             width: 50,
             display: 'flex',
             textAlign: 'center',

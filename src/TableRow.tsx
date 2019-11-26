@@ -280,6 +280,7 @@ class TableRow<ValueType> extends React.Component<TableRowProps<ValueType>, Tabl
             transition: 'all 0.8s ease',
             position: 'absolute',
             height,
+            right: 0,
             width: 50,
             display: 'flex',
             textAlign: 'center',
