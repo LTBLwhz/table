@@ -1,3 +1,5 @@
+/* eslint-disable no-return-assign */
+/* eslint-disable arrow-spacing */
 /* eslint-disable no-multi-assign */
 /* eslint-disable class-methods-use-this */
 import React from 'react';
@@ -71,6 +73,8 @@ class TableRow<ValueType> extends React.Component<TableRowProps<ValueType>, Tabl
   rowRef: HTMLElement;
 
   style: React.CSSProperties;
+
+  TrRef: any;
 
   static getDerivedStateFromProps(
     nextProps: TableRowProps<DefaultValueType>,
@@ -231,7 +235,7 @@ class TableRow<ValueType> extends React.Component<TableRowProps<ValueType>, Tabl
       parentPrefixCls,
     } = this.props;
 
-    const BodyRow = components.body.row;
+    const BodyRow: any = components.body.row;
     const BodyCell = components.body.cell;
     const tableScroll = document.getElementsByClassName(`${parentPrefixCls}-body`)[0];
 
@@ -341,9 +345,11 @@ class TableRow<ValueType> extends React.Component<TableRowProps<ValueType>, Tabl
       `${prefixCls}-level-${indent}`,
       customClassName,
     );
+    console.warn(this.TrRef && this.TrRef.getBoundingClientRect());
 
     return (
       <BodyRow
+        ref={r => (this.TrRef = r)}
         {...rowProps}
         onClick={this.onTriggerEvent(rowProps.onClick, onRowClick)}
         onDoubleClick={this.onTriggerEvent(rowProps.onDoubleClick, onRowDoubleClick)}
