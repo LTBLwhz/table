@@ -278,7 +278,7 @@ class TableRow<ValueType> extends React.Component<TableRowProps<ValueType>, Tabl
             opacity: hovered && tableScroll.scrollLeft ? 1 : 0,
             zIndex: 10,
             transition: 'all 0.8s ease',
-            position: 'fixed',
+            position: 'absolute',
             height,
             width: 50,
             display: 'flex',
@@ -310,7 +310,7 @@ class TableRow<ValueType> extends React.Component<TableRowProps<ValueType>, Tabl
                 ? 1
                 : 0,
             marginLeft: -ml,
-            position: 'fixed',
+            position: 'absolute',
             transition: 'all 0.8s ease',
             height,
             width: 50,

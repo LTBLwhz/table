@@ -1,26 +1,3 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireDefault(require("react"));
-
-var _reactDom = _interopRequireDefault(require("react-dom"));
-
-var _warning = _interopRequireDefault(require("rc-util/lib/warning"));
-
-var _miniStore = require("mini-store");
-
-var _reactLifecyclesCompat = require("react-lifecycles-compat");
-
-var _classnames = _interopRequireDefault(require("classnames"));
-
-var _TableCell = _interopRequireDefault(require("./TableCell"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
@@ -48,6 +25,17 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+/* eslint-disable no-multi-assign */
+
+/* eslint-disable class-methods-use-this */
+import React from 'react';
+import ReactDOM from 'react-dom';
+import warning from "rc-util/es/warning";
+import { connect } from 'mini-store';
+import { polyfill } from 'react-lifecycles-compat';
+import classNames from 'classnames';
+import TableCell from './TableCell';
 
 var TableRow =
 /*#__PURE__*/
@@ -185,7 +173,7 @@ function (_React$Component) {
   }, {
     key: "saveRowRef",
     value: function saveRowRef() {
-      this.rowRef = _reactDom.default.findDOMNode(this);
+      this.rowRef = ReactDOM.findDOMNode(this);
       var _this$props7 = this.props,
           isAnyColumnsFixed = _this$props7.isAnyColumnsFixed,
           fixed = _this$props7.fixed,
@@ -256,8 +244,8 @@ function (_React$Component) {
 
       for (var i = 0; i < columns.length; i += 1) {
         var column = columns[i];
-        (0, _warning.default)(column.onCellClick === undefined, 'column[onCellClick] is deprecated, please use column[onCell] instead.');
-        cells.push(_react.default.createElement(_TableCell.default, {
+        warning(column.onCellClick === undefined, 'column[onCellClick] is deprecated, please use column[onCell] instead.');
+        cells.push(React.createElement(TableCell, {
           prefixCls: prefixCls,
           record: record,
           indentSize: indentSize,
@@ -278,7 +266,7 @@ function (_React$Component) {
       });
 
       if (hasLeftFixed && !hasRightFixed) {
-        cells.push(_react.default.createElement("div", {
+        cells.push(React.createElement("div", {
           key: "".concat(rowKey, "left"),
           onClick: this.scrollTableHandle.bind(this, 1),
           style: {
@@ -303,7 +291,7 @@ function (_React$Component) {
           t += c.width;
           return t;
         }, 0) + 50;
-        cells.push(_react.default.createElement("div", {
+        cells.push(React.createElement("div", {
           key: "".concat(rowKey, "right"),
           onClick: this.scrollTableHandle.bind(this, 0),
           style: {
@@ -335,8 +323,8 @@ function (_React$Component) {
       }
 
       style = _objectSpread({}, style, {}, customStyle);
-      var rowClassName = (0, _classnames.default)(prefixCls, className, "".concat(prefixCls, "-level-").concat(indent), customClassName);
-      return _react.default.createElement(BodyRow, Object.assign({}, rowProps, {
+      var rowClassName = classNames(prefixCls, className, "".concat(prefixCls, "-level-").concat(indent), customClassName);
+      return React.createElement(BodyRow, Object.assign({}, rowProps, {
         onClick: this.onTriggerEvent(rowProps.onClick, onRowClick),
         onDoubleClick: this.onTriggerEvent(rowProps.onDoubleClick, onRowDoubleClick),
         onMouseEnter: this.onTriggerEvent(rowProps.onMouseEnter, onRowMouseEnter, this.onMouseEnter),
@@ -364,7 +352,7 @@ function (_React$Component) {
   }]);
 
   return TableRow;
-}(_react.default.Component);
+}(React.Component);
 
 TableRow.defaultProps = {
   onRow: function onRow() {},
@@ -395,9 +383,8 @@ function getRowHeight(state, props) {
   return null;
 }
 
-(0, _reactLifecyclesCompat.polyfill)(TableRow);
-
-var _default = (0, _miniStore.connect)(function (state, props) {
+polyfill(TableRow);
+export default connect(function (state, props) {
   var currentHoverKey = state.currentHoverKey,
       expandedRowKeys = state.expandedRowKeys;
   var rowKey = props.rowKey,
@@ -411,5 +398,3 @@ var _default = (0, _miniStore.connect)(function (state, props) {
     height: getRowHeight(state, props)
   };
 })(TableRow);
-
-exports.default = _default;

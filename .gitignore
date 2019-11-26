@@ -25,6 +25,5 @@ dist
 build
 coverage
 yarn.lock
-es/
 .storybook
 .doc
