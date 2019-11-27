@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 /* eslint-disable no-return-assign */
 /* eslint-disable arrow-spacing */
 /* eslint-disable no-multi-assign */
@@ -74,7 +75,7 @@ class TableRow<ValueType> extends React.Component<TableRowProps<ValueType>, Tabl
 
   style: React.CSSProperties;
 
-  TrRef: any = null;
+  mainTableScrollRef: any;
 
   static getDerivedStateFromProps(
     nextProps: TableRowProps<DefaultValueType>,
@@ -182,6 +183,7 @@ class TableRow<ValueType> extends React.Component<TableRowProps<ValueType>, Tabl
 
   saveRowRef() {
     this.rowRef = ReactDOM.findDOMNode(this) as HTMLElement;
+    this.getMainTableBody();
 
     const { isAnyColumnsFixed, fixed, expandedRow, ancestorKeys } = this.props;
 
@@ -200,10 +202,26 @@ class TableRow<ValueType> extends React.Component<TableRowProps<ValueType>, Tabl
 
   // type 0, 1,  0 是右 1是左
   scrollTableHandle(type: any) {
-    const { parentPrefixCls } = this.props;
-    const tableScroll = document.getElementsByClassName(`${parentPrefixCls}-body`)[0];
+    if (!this.mainTableScrollRef) return;
+    const tableScroll = this.mainTableScrollRef;
     const scrollX = (tableScroll.scrollLeft += type ? -50 : 50);
     tableScroll.scrollTo(scrollX, 0);
+  }
+
+  getMainTableBody() {
+    if (!this.rowRef) return;
+    const { parentPrefixCls } = this.props;
+    let a = this.rowRef;
+    while (true) {
+      if (a.classList.contains(`${parentPrefixCls}-content`)) {
+        break;
+      } else {
+        a = a.parentElement;
+      }
+    }
+    this.mainTableScrollRef = [...a.children[0].children].find(c =>
+      c.classList.contains(`${parentPrefixCls}-body`),
+    );
   }
 
   render() {
@@ -234,10 +252,12 @@ class TableRow<ValueType> extends React.Component<TableRowProps<ValueType>, Tabl
       onRowContextMenu,
       parentPrefixCls,
     } = this.props;
-
+    // if (this.rowRef && this.rowRef.getBoundingClientRect) {
+    //   const { top } = this.rowRef.getBoundingClientRect()
+    //   trTop = top;
+    // }
     const BodyRow: any = components.body.row;
     const BodyCell = components.body.cell;
-    const tableScroll = document.getElementsByClassName(`${parentPrefixCls}-body`)[0];
 
     let { className } = this.props;
 
@@ -279,50 +299,25 @@ class TableRow<ValueType> extends React.Component<TableRowProps<ValueType>, Tabl
           key={`${rowKey}left`}
           onClick={this.scrollTableHandle.bind(this, 1)}
           style={{
-            opacity: hovered && tableScroll.scrollLeft ? 1 : 0,
-            zIndex: 10,
-            transition: 'all 0.8s ease',
-            position: 'fixed',
+            opacity: hovered ? 1 : 0,
             height,
-            width: 50,
-            display: 'flex',
-            textAlign: 'center',
-            alignItems: 'center',
-            justifyContent: 'center',
           }}
+          className={`${parentPrefixCls}-fixed-left-scroll-btn`}
         >
           {'<='}
         </div>,
       );
     }
     if (!hasLeftFixed && hasRightFixed) {
-      const ml =
-        columns
-          .filter(column => column.fixed === 'right')
-          .reduce((t, c: any) => {
-            t += c.width;
-            return t;
-          }, 0) + 50;
-      cells.push(
+      cells.unshift(
         <div
           key={`${rowKey}right`}
           onClick={this.scrollTableHandle.bind(this, 0)}
           style={{
-            opacity:
-              hovered &&
-              tableScroll.scrollLeft !== tableScroll.scrollWidth - tableScroll.clientWidth
-                ? 1
-                : 0,
-            marginLeft: -ml,
-            position: 'fixed',
-            transition: 'all 0.8s ease',
+            opacity: hovered ? 1 : 0,
             height,
-            width: 50,
-            display: 'flex',
-            textAlign: 'center',
-            alignItems: 'center',
-            justifyContent: 'center',
           }}
+          className={`${parentPrefixCls}-fixed-right-scroll-btn`}
         >
           {'=>'}
         </div>,
@@ -345,11 +340,9 @@ class TableRow<ValueType> extends React.Component<TableRowProps<ValueType>, Tabl
       `${prefixCls}-level-${indent}`,
       customClassName,
     );
-    console.warn(this.TrRef && this.TrRef.getBoundingClientRect());
 
     return (
       <BodyRow
-        ref={r => (this.TrRef = r)}
         {...rowProps}
         onClick={this.onTriggerEvent(rowProps.onClick, onRowClick)}
         onDoubleClick={this.onTriggerEvent(rowProps.onDoubleClick, onRowDoubleClick)}

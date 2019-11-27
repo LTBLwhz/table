@@ -17,6 +17,14 @@ var ColGroup = function ColGroup(props, _ref) {
     }));
   }
 
+  if (fixed === 'right') {
+    cols.push(React.createElement("col", {
+      style: {
+        width: 50
+      }
+    }));
+  }
+
   var leafColumns;
 
   if (fixed === 'left') {

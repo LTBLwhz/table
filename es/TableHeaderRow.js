@@ -30,9 +30,23 @@ function TableHeaderRow(_ref) {
     height: height
   }, customStyle);
 
+  var hasLeftFixed = row.map(function (cell) {
+    return cell.column;
+  }).find(function (c) {
+    return c.fixed === 'left';
+  });
+  var hasRightFixed = row.map(function (cell) {
+    return cell.column;
+  }).find(function (c) {
+    return c.fixed === 'right';
+  });
   return React.createElement(HeaderRow, Object.assign({}, rowProps, {
     style: style
-  }), row.map(function (cell, i) {
+  }), !hasLeftFixed && hasRightFixed ? React.createElement(HeaderCell, {
+    style: {
+      background: 'transparent'
+    }
+  }) : null, row.map(function (cell, i) {
     var _classNames;
 
     var column = cell.column,

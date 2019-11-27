@@ -35,9 +35,12 @@ function TableHeaderRow({
   const rowProps = onHeaderRow(row.map(cell => cell.column), index);
   const customStyle = rowProps ? rowProps.style : {};
   const style = { height, ...customStyle };
+  const hasLeftFixed = row.map(cell => cell.column).find(c => c.fixed === 'left');
+  const hasRightFixed = row.map(cell => cell.column).find(c => c.fixed === 'right');
 
   return (
     <HeaderRow {...rowProps} style={style}>
+      {!hasLeftFixed && hasRightFixed ? <HeaderCell style={{ background: 'transparent' }} /> : null}
       {row.map((cell, i) => {
         const { column, ...cellProps } = cell;
         const customProps = column.onHeaderCell ? column.onHeaderCell(column) : {};

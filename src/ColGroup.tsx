@@ -18,6 +18,9 @@ const ColGroup: React.FC<ColGroupProps> = (props, { table }) => {
   if (expandIconAsCell && fixed !== 'right') {
     cols.push(<col className={`${prefixCls}-expand-icon-col`} key="rc-table-expand-icon-col" />);
   }
+  if (fixed === 'right') {
+    cols.push(<col style={{ width: 50 }} />);
+  }
 
   let leafColumns: InternalColumnType[];
 
