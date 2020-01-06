@@ -222,9 +222,10 @@ function (_React$Component) {
       if (!this.rowRef) return;
       var parentPrefixCls = this.props.parentPrefixCls;
       var a = this.rowRef;
+      if (!a) return;
 
       while (true) {
-        if (a.classList && a.classList.contains("".concat(parentPrefixCls, "-content"))) {
+        if (a && a.classList && a.classList.contains("".concat(parentPrefixCls, "-content"))) {
           break;
         } else {
           a = a.parentElement;
@@ -232,7 +233,7 @@ function (_React$Component) {
       }
 
       this.mainTableScrollRef = _toConsumableArray(a.children[0].children).find(function (c) {
-        return c.classList.contains("".concat(parentPrefixCls, "-body"));
+        return c && c.classList.contains("".concat(parentPrefixCls, "-body"));
       });
     }
   }, {

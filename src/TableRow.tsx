@@ -212,15 +212,16 @@ class TableRow<ValueType> extends React.Component<TableRowProps<ValueType>, Tabl
     if (!this.rowRef) return;
     const { parentPrefixCls } = this.props;
     let a = this.rowRef;
+    if (!a) return;
     while (true) {
-      if (a.classList && a.classList.contains(`${parentPrefixCls}-content`)) {
+      if (a && a.classList && a.classList.contains(`${parentPrefixCls}-content`)) {
         break;
       } else {
         a = a.parentElement;
       }
     }
-    this.mainTableScrollRef = [...a.children[0].children].find(c =>
-      c.classList.contains(`${parentPrefixCls}-body`),
+    this.mainTableScrollRef = [...a.children[0].children].find(
+      c => c && c.classList.contains(`${parentPrefixCls}-body`),
     );
   }
 
