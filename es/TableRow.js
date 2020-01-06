@@ -224,7 +224,7 @@ function (_React$Component) {
       var a = this.rowRef;
 
       while (true) {
-        if (a.classList.contains("".concat(parentPrefixCls, "-content"))) {
+        if (a.classList && a.classList.contains("".concat(parentPrefixCls, "-content"))) {
           break;
         } else {
           a = a.parentElement;

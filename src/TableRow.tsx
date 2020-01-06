@@ -213,7 +213,7 @@ class TableRow<ValueType> extends React.Component<TableRowProps<ValueType>, Tabl
     const { parentPrefixCls } = this.props;
     let a = this.rowRef;
     while (true) {
-      if (a.classList.contains(`${parentPrefixCls}-content`)) {
+      if (a.classList && a.classList.contains(`${parentPrefixCls}-content`)) {
         break;
       } else {
         a = a.parentElement;
