@@ -64,7 +64,9 @@ function (_React$Component) {
           onRowContextMenu = _table$props.onRowContextMenu,
           onRowMouseEnter = _table$props.onRowMouseEnter,
           onRowMouseLeave = _table$props.onRowMouseLeave,
-          onRow = _table$props.onRow;
+          onRow = _table$props.onRow,
+          leftIcon = _table$props.leftIcon,
+          rightIcon = _table$props.rightIcon;
       var _this$props = _this.props,
           getRowKey = _this$props.getRowKey,
           fixed = _this$props.fixed,
@@ -124,7 +126,9 @@ function (_React$Component) {
             ancestorKeys: ancestorKeys,
             ref: rowRef(record, i, indent),
             components: components,
-            isAnyColumnsFixed: isAnyColumnsFixed
+            isAnyColumnsFixed: isAnyColumnsFixed,
+            leftIcon: leftIcon,
+            rightIcon: rightIcon
           }, expandableRow));
         });
         rows.push(row);

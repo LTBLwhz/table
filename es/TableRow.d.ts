@@ -28,6 +28,8 @@ export interface TableRowProps<ValueType> {
     isAnyColumnsFixed?: boolean;
     ancestorKeys: Key[];
     parentPrefixCls?: any;
+    leftIcon?: any;
+    rightIcon?: any;
 }
 declare const _default: any;
 export default _default;

@@ -264,7 +264,9 @@ function (_React$Component) {
           onRowMouseEnter = _this$props8.onRowMouseEnter,
           onRowMouseLeave = _this$props8.onRowMouseLeave,
           onRowContextMenu = _this$props8.onRowContextMenu,
-          parentPrefixCls = _this$props8.parentPrefixCls; // if (this.rowRef && this.rowRef.getBoundingClientRect) {
+          parentPrefixCls = _this$props8.parentPrefixCls,
+          leftIcon = _this$props8.leftIcon,
+          rightIcon = _this$props8.rightIcon; // if (this.rowRef && this.rowRef.getBoundingClientRect) {
       //   const { top } = this.rowRef.getBoundingClientRect()
       //   trTop = top;
       // }
@@ -312,7 +314,7 @@ function (_React$Component) {
             height: height
           },
           className: "".concat(parentPrefixCls, "-fixed-left-scroll-btn")
-        }, '<='));
+        }, leftIcon || '<='));
       }
 
       if (!hasLeftFixed && hasRightFixed) {
@@ -324,7 +326,7 @@ function (_React$Component) {
             height: height
           },
           className: "".concat(parentPrefixCls, "-fixed-right-scroll-btn")
-        }, '=>'));
+        }, rightIcon || '=>'));
       }
 
       var _ref = onRow(record, index) || {},
