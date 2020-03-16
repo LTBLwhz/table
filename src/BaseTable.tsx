@@ -66,6 +66,8 @@ class BaseTable<ValueType> extends React.Component<BaseTableProps<ValueType>> {
       onRowMouseEnter,
       onRowMouseLeave,
       onRow,
+      leftIcon,
+      rightIcon,
     } = table.props;
     const { getRowKey, fixed, expander, isAnyColumnsFixed } = this.props;
 
@@ -128,6 +130,8 @@ class BaseTable<ValueType> extends React.Component<BaseTableProps<ValueType>> {
               ref={rowRef(record, i, indent)}
               components={components}
               isAnyColumnsFixed={isAnyColumnsFixed}
+              leftIcon={leftIcon}
+              rightIcon={rightIcon}
               {...expandableRow}
             />
           )}

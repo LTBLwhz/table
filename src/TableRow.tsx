@@ -53,6 +53,8 @@ export interface TableRowProps<ValueType> {
   isAnyColumnsFixed?: boolean;
   ancestorKeys: Key[];
   parentPrefixCls?: any;
+  leftIcon?: any;
+  rightIcon?: any;
 }
 
 interface TableRowState {
@@ -252,6 +254,8 @@ class TableRow<ValueType> extends React.Component<TableRowProps<ValueType>, Tabl
       onRowMouseLeave,
       onRowContextMenu,
       parentPrefixCls,
+      leftIcon,
+      rightIcon,
     } = this.props;
     // if (this.rowRef && this.rowRef.getBoundingClientRect) {
     //   const { top } = this.rowRef.getBoundingClientRect()
@@ -305,7 +309,7 @@ class TableRow<ValueType> extends React.Component<TableRowProps<ValueType>, Tabl
           }}
           className={`${parentPrefixCls}-fixed-left-scroll-btn`}
         >
-          {'<='}
+          {leftIcon || '<='}
         </div>,
       );
     }
@@ -320,7 +324,7 @@ class TableRow<ValueType> extends React.Component<TableRowProps<ValueType>, Tabl
           }}
           className={`${parentPrefixCls}-fixed-right-scroll-btn`}
         >
-          {'=>'}
+          {rightIcon || '=>'}
         </div>,
       );
     }

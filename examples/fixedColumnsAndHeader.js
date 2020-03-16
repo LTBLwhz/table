@@ -33,7 +33,13 @@ const data = [
 const Demo = () => (
   <div>
     <h2>Fixed columns and header</h2>
-    <Table columns={columns} scroll={{ x: 1650, y: 300 }} data={data} style={{ width: 800 }} />
+    <Table
+      columns={columns}
+      scroll={{ x: 1650, y: 300 }}
+      data={data}
+      style={{ width: 800 }}
+      leftIcon="aaa"
+    />
   </div>
 );
 
