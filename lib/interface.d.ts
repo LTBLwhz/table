@@ -1,6 +1,6 @@
 import React from 'react';
 export declare type Key = React.Key;
-export declare type FixedType = 'left' | 'right' | boolean;
+export declare type FixedType = any;
 export declare type DefaultValueType = Record<string, any>;
 export interface RenderedCell {
     props?: Cell;

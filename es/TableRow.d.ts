@@ -30,6 +30,7 @@ export interface TableRowProps<ValueType> {
     parentPrefixCls?: any;
     leftIcon?: any;
     rightIcon?: any;
+    isTree?: any;
 }
 declare const _default: any;
 export default _default;

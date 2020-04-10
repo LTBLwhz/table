@@ -213,7 +213,7 @@ function (_React$Component) {
     value: function scrollTableHandle(type) {
       if (!this.mainTableScrollRef) return;
       var tableScroll = this.mainTableScrollRef;
-      var scrollX = tableScroll.scrollLeft += type ? -50 : 50;
+      var scrollX = tableScroll.scrollLeft += type ? -400 : 400;
       tableScroll.scrollTo(scrollX, 0);
     }
   }, {
@@ -228,11 +228,15 @@ function (_React$Component) {
         if (a && a.classList && a.classList.contains("".concat(parentPrefixCls, "-content"))) {
           break;
         } else {
+          if (!a) {
+            break;
+          }
+
           a = a.parentElement;
         }
       }
 
-      this.mainTableScrollRef = _toConsumableArray(a.children[0].children).find(function (c) {
+      this.mainTableScrollRef = a && _toConsumableArray(a.children[0].children).find(function (c) {
         return c && c.classList.contains("".concat(parentPrefixCls, "-body"));
       });
     }
@@ -266,7 +270,8 @@ function (_React$Component) {
           onRowContextMenu = _this$props8.onRowContextMenu,
           parentPrefixCls = _this$props8.parentPrefixCls,
           leftIcon = _this$props8.leftIcon,
-          rightIcon = _this$props8.rightIcon; // if (this.rowRef && this.rowRef.getBoundingClientRect) {
+          rightIcon = _this$props8.rightIcon,
+          isTree = _this$props8.isTree; // if (this.rowRef && this.rowRef.getBoundingClientRect) {
       //   const { top } = this.rowRef.getBoundingClientRect()
       //   trTop = top;
       // }
@@ -305,28 +310,34 @@ function (_React$Component) {
         return column.fixed === 'right';
       });
 
-      if (hasLeftFixed && !hasRightFixed) {
+      if (hasLeftFixed && !hasRightFixed && (!isTree || isTree && indent !== 0)) {
         cells.push(React.createElement("div", {
           key: "".concat(rowKey, "left"),
+          className: "".concat(parentPrefixCls, "-fixed-left-scroll-btn"),
+          style: {
+            height: height
+          }
+        }, React.createElement("span", {
           onClick: this.scrollTableHandle.bind(this, 1),
           style: {
-            opacity: hovered ? 1 : 0,
-            height: height
-          },
-          className: "".concat(parentPrefixCls, "-fixed-left-scroll-btn")
-        }, leftIcon || '<='));
+            opacity: hovered ? 1 : 0
+          }
+        }, leftIcon || '<=')));
       }
 
-      if (!hasLeftFixed && hasRightFixed) {
+      if (!hasLeftFixed && hasRightFixed && (!isTree || isTree && indent !== 0)) {
         cells.unshift(React.createElement("div", {
           key: "".concat(rowKey, "right"),
+          className: "".concat(parentPrefixCls, "-fixed-right-scroll-btn"),
+          style: {
+            height: height
+          }
+        }, React.createElement("span", {
           onClick: this.scrollTableHandle.bind(this, 0),
           style: {
-            opacity: hovered ? 1 : 0,
-            height: height
-          },
-          className: "".concat(parentPrefixCls, "-fixed-right-scroll-btn")
-        }, rightIcon || '=>'));
+            opacity: hovered ? 1 : 0
+          }
+        }, rightIcon || '=>')));
       }
 
       var _ref = onRow(record, index) || {},
@@ -343,6 +354,13 @@ function (_React$Component) {
       }
 
       style = _objectSpread({}, style, {}, customStyle);
+
+      if (isTree && indent === 0) {
+        style = _objectSpread({}, style, {
+          height: 50
+        });
+      }
+
       var rowClassName = classNames(prefixCls, className, "".concat(prefixCls, "-level-").concat(indent), customClassName);
       return React.createElement(BodyRow, Object.assign({}, rowProps, {
         onClick: this.onTriggerEvent(rowProps.onClick, onRowClick),

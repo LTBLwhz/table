@@ -35,6 +35,9 @@ export interface TableProps<ValueType> extends Omit<ExpandableTableProps<ValueTy
     children?: React.ReactNode;
     components?: TableComponents;
     tableLayout?: 'fixed';
+    leftIcon?: any;
+    rightIcon?: any;
+    isTree?: any;
 }
 interface TableState {
     columns?: ColumnType[];

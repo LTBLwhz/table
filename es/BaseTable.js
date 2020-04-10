@@ -66,7 +66,8 @@ function (_React$Component) {
           onRowMouseLeave = _table$props.onRowMouseLeave,
           onRow = _table$props.onRow,
           leftIcon = _table$props.leftIcon,
-          rightIcon = _table$props.rightIcon;
+          rightIcon = _table$props.rightIcon,
+          isTree = _table$props.isTree;
       var _this$props = _this.props,
           getRowKey = _this$props.getRowKey,
           fixed = _this$props.fixed,
@@ -128,7 +129,8 @@ function (_React$Component) {
             components: components,
             isAnyColumnsFixed: isAnyColumnsFixed,
             leftIcon: leftIcon,
-            rightIcon: rightIcon
+            rightIcon: rightIcon,
+            isTree: isTree
           }, expandableRow));
         });
         rows.push(row);

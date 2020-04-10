@@ -56,6 +56,9 @@ export interface TableProps<ValueType>
   children?: React.ReactNode;
   components?: TableComponents;
   tableLayout?: 'fixed';
+  leftIcon?: any;
+  rightIcon?: any;
+  isTree?: any;
 }
 
 interface TableState {

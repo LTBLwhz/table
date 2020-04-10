@@ -2,7 +2,7 @@ import React from 'react';
 
 export type Key = React.Key;
 
-export type FixedType = 'left' | 'right' | boolean;
+export type FixedType = any;
 
 export type DefaultValueType = Record<string, any>;
 

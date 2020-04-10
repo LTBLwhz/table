@@ -55,6 +55,7 @@ export interface TableRowProps<ValueType> {
   parentPrefixCls?: any;
   leftIcon?: any;
   rightIcon?: any;
+  isTree?: any;
 }
 
 interface TableRowState {
@@ -206,7 +207,7 @@ class TableRow<ValueType> extends React.Component<TableRowProps<ValueType>, Tabl
   scrollTableHandle(type: any) {
     if (!this.mainTableScrollRef) return;
     const tableScroll = this.mainTableScrollRef;
-    const scrollX = (tableScroll.scrollLeft += type ? -50 : 50);
+    const scrollX = (tableScroll.scrollLeft += type ? -400 : 400);
     tableScroll.scrollTo(scrollX, 0);
   }
 
@@ -219,12 +220,15 @@ class TableRow<ValueType> extends React.Component<TableRowProps<ValueType>, Tabl
       if (a && a.classList && a.classList.contains(`${parentPrefixCls}-content`)) {
         break;
       } else {
+        if (!a) {
+          break;
+        }
         a = a.parentElement;
       }
     }
-    this.mainTableScrollRef = [...a.children[0].children].find(
-      c => c && c.classList.contains(`${parentPrefixCls}-body`),
-    );
+    this.mainTableScrollRef =
+      a &&
+      [...a.children[0].children].find(c => c && c.classList.contains(`${parentPrefixCls}-body`));
   }
 
   render() {
@@ -256,6 +260,7 @@ class TableRow<ValueType> extends React.Component<TableRowProps<ValueType>, Tabl
       parentPrefixCls,
       leftIcon,
       rightIcon,
+      isTree,
     } = this.props;
     // if (this.rowRef && this.rowRef.getBoundingClientRect) {
     //   const { top } = this.rowRef.getBoundingClientRect()
@@ -298,33 +303,39 @@ class TableRow<ValueType> extends React.Component<TableRowProps<ValueType>, Tabl
     }
     const hasLeftFixed = columns.find(column => column.fixed === 'left');
     const hasRightFixed = columns.find(column => column.fixed === 'right');
-    if (hasLeftFixed && !hasRightFixed) {
+    if (hasLeftFixed && !hasRightFixed && (!isTree || (isTree && indent !== 0))) {
       cells.push(
         <div
           key={`${rowKey}left`}
-          onClick={this.scrollTableHandle.bind(this, 1)}
-          style={{
-            opacity: hovered ? 1 : 0,
-            height,
-          }}
           className={`${parentPrefixCls}-fixed-left-scroll-btn`}
+          style={{ height }}
         >
-          {leftIcon || '<='}
+          <span
+            onClick={this.scrollTableHandle.bind(this, 1)}
+            style={{
+              opacity: hovered ? 1 : 0,
+            }}
+          >
+            {leftIcon || '<='}
+          </span>
         </div>,
       );
     }
-    if (!hasLeftFixed && hasRightFixed) {
+    if (!hasLeftFixed && hasRightFixed && (!isTree || (isTree && indent !== 0))) {
       cells.unshift(
         <div
           key={`${rowKey}right`}
-          onClick={this.scrollTableHandle.bind(this, 0)}
-          style={{
-            opacity: hovered ? 1 : 0,
-            height,
-          }}
           className={`${parentPrefixCls}-fixed-right-scroll-btn`}
+          style={{ height }}
         >
-          {rightIcon || '=>'}
+          <span
+            onClick={this.scrollTableHandle.bind(this, 0)}
+            style={{
+              opacity: hovered ? 1 : 0,
+            }}
+          >
+            {rightIcon || '=>'}
+          </span>
         </div>,
       );
     }
@@ -338,6 +349,12 @@ class TableRow<ValueType> extends React.Component<TableRowProps<ValueType>, Tabl
     }
 
     style = { ...style, ...customStyle };
+    if (isTree && indent === 0) {
+      style = {
+        ...style,
+        height: 50,
+      };
+    }
 
     const rowClassName = classNames(
       prefixCls,
