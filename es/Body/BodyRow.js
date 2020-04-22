@@ -144,7 +144,7 @@ function BodyRow(props) {
       additionalCellProps = column.onCell(record, index);
     }
 
-    if (scroll.aux && scroll.aux[0] && fixedInfo.lastFixLeft) {
+    if (scroll && scroll.aux && scroll.aux[0] && fixedInfo.lastFixLeft) {
       return React.createElement(Cell, Object.assign({
         className: columnClassName,
         ellipsis: column.ellipsis,
@@ -162,7 +162,7 @@ function BodyRow(props) {
       }), scroll.aux[0].render());
     }
 
-    if (scroll.aux && scroll.aux[1] && fixedInfo.firstFixRight) {
+    if (scroll && scroll.aux && scroll.aux[1] && fixedInfo.firstFixRight) {
       return React.createElement(Cell, Object.assign({
         className: columnClassName,
         ellipsis: column.ellipsis,

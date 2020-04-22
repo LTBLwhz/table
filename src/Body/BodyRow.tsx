@@ -158,7 +158,7 @@ function BodyRow<RecordType extends { children?: RecordType[] }>(props: BodyRowP
         if (column.onCell) {
           additionalCellProps = column.onCell(record, index);
         }
-        if (scroll.aux && scroll.aux[0] && fixedInfo.lastFixLeft) {
+        if (scroll && scroll.aux && scroll.aux[0] && fixedInfo.lastFixLeft) {
           return (
             <Cell
               className={columnClassName}
@@ -180,7 +180,7 @@ function BodyRow<RecordType extends { children?: RecordType[] }>(props: BodyRowP
           );
         }
 
-        if (scroll.aux && scroll.aux[1] && fixedInfo.firstFixRight) {
+        if (scroll && scroll.aux && scroll.aux[1] && fixedInfo.firstFixRight) {
           return (
             <Cell
               className={columnClassName}
