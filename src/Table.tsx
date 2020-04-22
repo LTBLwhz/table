@@ -52,6 +52,7 @@ import {
   CustomizeComponent,
   ColumnType,
   CustomizeScrollBody,
+  AuxType,
 } from './interface';
 import TableContext from './context/TableContext';
 import BodyContext from './context/BodyContext';
@@ -106,7 +107,7 @@ export interface TableProps<RecordType = unknown> extends LegacyExpandableProps<
   tableLayout?: TableLayout;
 
   // Fixed Columns
-  scroll?: { x?: number | true | string; y?: number | string };
+  scroll?: { x?: number | true | string; y?: number | string; aux?: AuxType[] };
 
   // Expandable
   /** Config expand rows */
@@ -661,8 +662,9 @@ function Table<RecordType extends DefaultRecordType>(props: TableProps<RecordTyp
       getComponent,
       scrollbarSize,
       direction,
+      scroll,
     }),
-    [prefixCls, getComponent, scrollbarSize, direction],
+    [prefixCls, getComponent, scrollbarSize, direction, scroll],
   );
 
   const BodyContextValue = React.useMemo(

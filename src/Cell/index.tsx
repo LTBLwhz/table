@@ -9,6 +9,7 @@ import {
   CellType,
   DefaultRecordType,
   AlignType,
+  AuxType,
 } from '../interface';
 import { getPathValue } from '../utils/valueUtil';
 
@@ -53,6 +54,7 @@ export interface CellProps<RecordType extends DefaultRecordType> {
   /** @private Used for `expandable` with nest tree */
   appendNode?: React.ReactNode;
   additionalProps?: React.HTMLAttributes<HTMLElement>;
+  aux?: AuxType;
 }
 
 function Cell<RecordType extends DefaultRecordType>(
@@ -77,6 +79,7 @@ function Cell<RecordType extends DefaultRecordType>(
     additionalProps = {},
     ellipsis,
     align,
+    aux,
   }: CellProps<RecordType>,
   ref: React.Ref<any>,
 ): React.ReactElement {
@@ -116,6 +119,14 @@ function Cell<RecordType extends DefaultRecordType>(
 
   if (ellipsis && (lastFixLeft || firstFixRight)) {
     childNode = <span className={`${cellPrefixCls}-content`}>{childNode}</span>;
+  }
+  if (aux) {
+    childNode = (
+      <>
+        {childNode}
+        {aux.render()}
+      </>
+    );
   }
 
   const {

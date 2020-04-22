@@ -203,3 +203,7 @@ export type TriggerEventHandler<RecordType> = (
   record: RecordType,
   event: React.MouseEvent<HTMLElement>,
 ) => void;
+
+export interface AuxType {
+  render: () => React.ReactNode;
+}

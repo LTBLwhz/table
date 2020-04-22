@@ -135,7 +135,50 @@ const Demo = () => {
 
         <Table<RecordType>
           columns={columns}
-          scroll={{ x: 1650, y: fixHeader ? 300 : null }}
+          scroll={{
+            x: 1650,
+            y: fixHeader ? 300 : null,
+            aux: [
+              {
+                render: () => (
+                  <span
+                    style={{
+                      background: '#fff',
+                      width: 32,
+                      height: 32,
+                      display: 'inline-block',
+                      lineHeight: 32,
+                      textAlign: 'center',
+                      borderRadius: 4,
+                      position: 'absolute',
+                      right: -50,
+                      zIndex: 999,
+                      boxShadow: '0 2px 4px 0 rgba(0,0,0,.1)',
+                    }}
+                  />
+                ),
+              },
+              {
+                render: () => (
+                  <span
+                    style={{
+                      background: '#fff',
+                      width: 32,
+                      height: 32,
+                      display: 'inline-block',
+                      lineHeight: 32,
+                      textAlign: 'center',
+                      borderRadius: 4,
+                      position: 'absolute',
+                      left: -50,
+                      zIndex: 999,
+                      boxShadow: '0 2px 4px 0 rgba(0,0,0,.1)',
+                    }}
+                  />
+                ),
+              },
+            ],
+          }}
           data={mergedData}
           style={{ width: autoWidth ? null : 800 }}
         />
