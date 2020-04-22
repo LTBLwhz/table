@@ -95,6 +95,9 @@ const MemoTableContent = React.memo<MemoTableContentProps>(
   },
 );
 
+interface axuType {
+  render: () => React.ReactNode;
+}
 export interface TableProps<RecordType = unknown> extends LegacyExpandableProps<RecordType> {
   prefixCls?: string;
   className?: string;
@@ -106,7 +109,7 @@ export interface TableProps<RecordType = unknown> extends LegacyExpandableProps<
   tableLayout?: TableLayout;
 
   // Fixed Columns
-  scroll?: { x?: number | true | string; y?: number | string };
+  scroll?: { x?: number | true | string; y?: number | string; aux?: axuType[] };
 
   // Expandable
   /** Config expand rows */
@@ -459,7 +462,6 @@ function Table<RecordType extends DefaultRecordType>(props: TableProps<RecordTyp
 
   // ====================== Render ======================
   const TableComponent = getComponent(['table'], 'table');
-
   // Table layout
   const mergedTableLayout = React.useMemo<TableLayout>(() => {
     if (tableLayout) {
@@ -650,8 +652,9 @@ function Table<RecordType extends DefaultRecordType>(props: TableProps<RecordTyp
       prefixCls,
       getComponent,
       scrollbarSize,
+      scroll,
     }),
-    [prefixCls, getComponent, scrollbarSize],
+    [prefixCls, getComponent, scrollbarSize, scroll],
   );
 
   const BodyContextValue = React.useMemo(

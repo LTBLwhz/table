@@ -7,6 +7,7 @@ export interface TableContextProps {
   getComponent: GetComponent;
 
   scrollbarSize: number;
+  scroll?: any;
 }
 
 const TableContext = React.createContext<TableContextProps>(null);

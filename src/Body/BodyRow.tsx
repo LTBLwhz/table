@@ -49,7 +49,7 @@ function BodyRow<RecordType extends { children?: RecordType[] }>(props: BodyRowP
     cellComponent,
     childrenColumnName,
   } = props;
-  const { prefixCls } = React.useContext(TableContext);
+  const { prefixCls, scroll } = React.useContext(TableContext);
   const {
     fixHeader,
     fixColumn,
@@ -157,6 +157,49 @@ function BodyRow<RecordType extends { children?: RecordType[] }>(props: BodyRowP
         let additionalCellProps: React.HTMLAttributes<HTMLElement>;
         if (column.onCell) {
           additionalCellProps = column.onCell(record, index);
+        }
+        if (scroll.aux && scroll.aux[0] && fixedInfo.lastFixLeft) {
+          return (
+            <Cell
+              className={columnClassName}
+              ellipsis={column.ellipsis}
+              align={column.align}
+              component={cellComponent}
+              prefixCls={prefixCls}
+              key={key}
+              record={record}
+              index={index}
+              dataIndex={dataIndex}
+              render={render}
+              {...fixedInfo}
+              appendNode={appendCellNode}
+              additionalProps={additionalCellProps}
+            >
+              {scroll.aux[0].render()}
+            </Cell>
+          );
+        }
+
+        if (scroll.aux && scroll.aux[1] && fixedInfo.firstFixRight) {
+          return (
+            <Cell
+              className={columnClassName}
+              ellipsis={column.ellipsis}
+              align={column.align}
+              component={cellComponent}
+              prefixCls={prefixCls}
+              key={key}
+              record={record}
+              index={index}
+              dataIndex={dataIndex}
+              render={render}
+              {...fixedInfo}
+              appendNode={appendCellNode}
+              additionalProps={additionalCellProps}
+            >
+              {scroll.aux[1].render()}
+            </Cell>
+          );
         }
 
         return (
