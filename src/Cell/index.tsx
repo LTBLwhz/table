@@ -103,14 +103,6 @@ function Cell<RecordType extends DefaultRecordType>(
       }
     }
   }
-  if (aux) {
-    childNode = (
-      <>
-        {childNode}
-        {aux.render()}
-      </>
-    );
-  }
 
   // Not crash if final `childNode` is not validate ReactNode
   if (
@@ -123,6 +115,15 @@ function Cell<RecordType extends DefaultRecordType>(
 
   if (ellipsis && (lastFixLeft || firstFixRight)) {
     childNode = <span className={`${cellPrefixCls}-content`}>{childNode}</span>;
+  }
+
+  if (aux) {
+    childNode = (
+      <>
+        {childNode}
+        {aux.render()}
+      </>
+    );
   }
 
   const { colSpan: cellColSpan, rowSpan: cellRowSpan, style: cellStyle, className: cellClassName } =
