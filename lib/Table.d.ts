@@ -24,11 +24,8 @@
  *  - All expanded props, move into expandable
  */
 import * as React from 'react';
-import { GetRowKey, ColumnsType, TableComponents, DefaultRecordType, GetComponentProps, ExpandableConfig, LegacyExpandableProps, PanelRender, TableLayout, RowClassName, ColumnType } from './interface';
+import { GetRowKey, ColumnsType, TableComponents, DefaultRecordType, GetComponentProps, ExpandableConfig, LegacyExpandableProps, PanelRender, TableLayout, RowClassName, ColumnType, AuxType } from './interface';
 export declare const INTERNAL_HOOKS = "rc-table-internal-hook";
-interface axuType {
-    render: () => React.ReactNode;
-}
 export interface TableProps<RecordType = unknown> extends LegacyExpandableProps<RecordType> {
     prefixCls?: string;
     className?: string;
@@ -41,7 +38,7 @@ export interface TableProps<RecordType = unknown> extends LegacyExpandableProps<
     scroll?: {
         x?: number | true | string;
         y?: number | string;
-        aux?: axuType[];
+        aux?: AuxType[];
     };
     /** Config expand rows */
     expandable?: ExpandableConfig<RecordType>;

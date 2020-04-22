@@ -158,8 +158,9 @@ function BodyRow(props) {
         render: render
       }, fixedInfo, {
         appendNode: appendCellNode,
-        additionalProps: additionalCellProps
-      }), scroll.aux[0].render());
+        additionalProps: additionalCellProps,
+        aux: scroll.aux[0]
+      }));
     }
 
     if (scroll && scroll.aux && scroll.aux[1] && fixedInfo.firstFixRight) {
@@ -176,8 +177,9 @@ function BodyRow(props) {
         render: render
       }, fixedInfo, {
         appendNode: appendCellNode,
-        additionalProps: additionalCellProps
-      }), scroll.aux[1].render());
+        additionalProps: additionalCellProps,
+        aux: scroll.aux[1]
+      }));
     }
 
     return React.createElement(Cell, Object.assign({

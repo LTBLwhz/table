@@ -52,6 +52,7 @@ import {
   CustomizeComponent,
   ColumnType,
   CustomizeScrollBody,
+  AuxType,
 } from './interface';
 import TableContext from './context/TableContext';
 import BodyContext from './context/BodyContext';
@@ -95,9 +96,6 @@ const MemoTableContent = React.memo<MemoTableContentProps>(
   },
 );
 
-interface axuType {
-  render: () => React.ReactNode;
-}
 export interface TableProps<RecordType = unknown> extends LegacyExpandableProps<RecordType> {
   prefixCls?: string;
   className?: string;
@@ -109,7 +107,7 @@ export interface TableProps<RecordType = unknown> extends LegacyExpandableProps<
   tableLayout?: TableLayout;
 
   // Fixed Columns
-  scroll?: { x?: number | true | string; y?: number | string; aux?: axuType[] };
+  scroll?: { x?: number | true | string; y?: number | string; aux?: AuxType[] };
 
   // Expandable
   /** Config expand rows */

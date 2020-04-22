@@ -174,9 +174,8 @@ function BodyRow<RecordType extends { children?: RecordType[] }>(props: BodyRowP
               {...fixedInfo}
               appendNode={appendCellNode}
               additionalProps={additionalCellProps}
-            >
-              {scroll.aux[0].render()}
-            </Cell>
+              aux={scroll.aux[0]}
+            />
           );
         }
 
@@ -196,9 +195,8 @@ function BodyRow<RecordType extends { children?: RecordType[] }>(props: BodyRowP
               {...fixedInfo}
               appendNode={appendCellNode}
               additionalProps={additionalCellProps}
-            >
-              {scroll.aux[1].render()}
-            </Cell>
+              aux={scroll.aux[1]}
+            />
           );
         }
 

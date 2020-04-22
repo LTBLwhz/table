@@ -135,4 +135,7 @@ export interface ExpandableConfig<RecordType> extends LegacyExpandableProps<Reco
 }
 export declare type PanelRender<RecordType> = (data: RecordType[]) => React.ReactNode;
 export declare type TriggerEventHandler<RecordType> = (record: RecordType, event: React.MouseEvent<HTMLElement>) => void;
+export interface AuxType {
+    render: () => React.ReactNode;
+}
 export {};

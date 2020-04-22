@@ -46,7 +46,8 @@ function Cell(_ref, ref) {
       _ref$additionalProps = _ref.additionalProps,
       additionalProps = _ref$additionalProps === void 0 ? {} : _ref$additionalProps,
       ellipsis = _ref.ellipsis,
-      align = _ref.align;
+      align = _ref.align,
+      aux = _ref.aux;
   var cellPrefixCls = "".concat(prefixCls, "-cell"); // ==================== Child Node ====================
 
   var cellProps;
@@ -69,6 +70,10 @@ function Cell(_ref, ref) {
         childNode = renderData;
       }
     }
+  }
+
+  if (aux) {
+    childNode = React.createElement(React.Fragment, null, childNode, aux.render());
   } // Not crash if final `childNode` is not validate ReactNode
 
 

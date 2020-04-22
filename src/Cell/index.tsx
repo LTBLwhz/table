@@ -2,6 +2,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { supportRef } from 'rc-util/lib/ref';
 import {
+  AuxType,
   DataIndex,
   ColumnType,
   RenderedCell,
@@ -51,6 +52,7 @@ export interface CellProps<RecordType extends DefaultRecordType> {
   /** @private Used for `expandable` with nest tree */
   appendNode?: React.ReactNode;
   additionalProps?: React.HTMLAttributes<HTMLElement>;
+  aux?: AuxType;
 }
 
 function Cell<RecordType extends DefaultRecordType>(
@@ -73,6 +75,7 @@ function Cell<RecordType extends DefaultRecordType>(
     additionalProps = {},
     ellipsis,
     align,
+    aux,
   }: CellProps<RecordType>,
   ref: React.Ref<any>,
 ): React.ReactElement {
@@ -99,6 +102,14 @@ function Cell<RecordType extends DefaultRecordType>(
         childNode = renderData;
       }
     }
+  }
+  if (aux) {
+    childNode = (
+      <>
+        {childNode}
+        {aux.render()}
+      </>
+    );
   }
 
   // Not crash if final `childNode` is not validate ReactNode
