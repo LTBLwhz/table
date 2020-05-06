@@ -112,6 +112,7 @@ function BodyRow<RecordType extends { children?: RecordType[] }>(props: BodyRowP
   }
 
   const columnsKey = getColumnsKey(flattenColumns);
+  const hasFirstFixRight = React.useRef(false);
   const baseRowNode = (
     <RowComponent
       {...additionalProps}
@@ -180,6 +181,34 @@ function BodyRow<RecordType extends { children?: RecordType[] }>(props: BodyRowP
           );
         }
         if (scroll && scroll.aux && scroll.aux[1] && fixedInfo.firstFixRight) {
+          hasFirstFixRight.current = true;
+          return (
+            <Cell
+              className={columnClassName}
+              ellipsis={column.ellipsis}
+              align={column.align}
+              component={cellComponent}
+              prefixCls={prefixCls}
+              key={key}
+              record={record}
+              index={index}
+              dataIndex={dataIndex}
+              render={render}
+              {...fixedInfo}
+              appendNode={appendCellNode}
+              additionalProps={additionalCellProps}
+              aux={scroll.aux[1]}
+            />
+          );
+        }
+
+        if (
+          scroll &&
+          scroll.aux &&
+          scroll.aux[1] &&
+          !hasFirstFixRight.current &&
+          colIndex === flattenColumns.length - 1
+        ) {
           return (
             <Cell
               className={columnClassName}
