@@ -115,7 +115,6 @@ function BodyRow(props) {
   }
 
   var columnsKey = getColumnsKey(flattenColumns);
-  var hasFirstFixRight = React.useRef(false);
   var baseRowNode = React.createElement(RowComponent, Object.assign({}, additionalProps, {
     "data-row-key": rowKey,
     className: classNames(className, "".concat(prefixCls, "-row"), "".concat(prefixCls, "-row-level-").concat(indent), computeRowClassName, additionalProps && additionalProps.className),
@@ -171,26 +170,6 @@ function BodyRow(props) {
     }
 
     if (scroll && scroll.aux && scroll.aux[1] && fixedInfo.firstFixRight) {
-      hasFirstFixRight.current = true;
-      return React.createElement(Cell, Object.assign({
-        className: columnClassName,
-        ellipsis: column.ellipsis,
-        align: column.align,
-        component: cellComponent,
-        prefixCls: prefixCls,
-        key: key,
-        record: record,
-        index: index,
-        dataIndex: dataIndex,
-        render: render
-      }, fixedInfo, {
-        appendNode: appendCellNode,
-        additionalProps: additionalCellProps,
-        aux: scroll.aux[1]
-      }));
-    }
-
-    if (scroll && scroll.aux && scroll.aux[1] && !hasFirstFixRight.current && colIndex === flattenColumns.length - 1) {
       return React.createElement(Cell, Object.assign({
         className: columnClassName,
         ellipsis: column.ellipsis,
